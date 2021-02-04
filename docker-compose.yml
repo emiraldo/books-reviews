@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:12-alpine
+    env_file: .env
+    ports:
+      - '5432:5432'
+    volumes:
+      - .postgres-data:/var/lib/postgresql/data
+
+  api:
+    build: ./src
+    command: >
+      sh -c "./wait-for-it.sh db:5432 -- python manage.py runserver 0.0.0.0:8000"
+    env_file: .env
+    volumes:
+      - ./src:/src
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=api.settings.local
+
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+
+  celery:
+    build: ./src
+    command: watchmedo auto-restart --directory=/src/ --pattern=*.py --recursive -- celery -A api worker -B -l info
+    depends_on:
+      - redis
+    env_file: .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=api.settings.local
+      - TZ=America/Bogota
+    volumes:
+      - ./src:/src
