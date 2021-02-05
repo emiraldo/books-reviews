@@ -1,5 +1,11 @@
 from .base import *
 
+DEBUG = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+
 STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -55,7 +55,7 @@ ENV/
 env.bak/
 venv.bak/
 
-postgres-data/
+.postgres-data/
 .DS_Store
 src/media/
 .idea
