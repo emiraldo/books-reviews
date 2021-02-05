@@ -10,4 +10,5 @@ django-cors-headers==3.5.0
 django-filter==2.4.0
 redis==3.5.3
 djangorestframework==3.12.2
-uwsgi
+uwsgi==2.0.19.1
+requests==2.25.1

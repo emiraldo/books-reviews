@@ -7,11 +7,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,11 +19,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'celery',
+    'reviews'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,17 +82,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'America/Bogota'
-
-LANGUAGES = (
-    ('es', _('Spanish')),
-)
-
-LOCALE_PATHS = [
-    BASE_DIR / 'locale/',
-]
 
 USE_I18N = True
 
@@ -137,3 +126,5 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+GOOGLEAPI_BOOKS = os.environ.get('GOOGLEAPI_BOOKS')
