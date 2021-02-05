@@ -1,0 +1,13 @@
+Django<=3.0.11
+psycopg2-binary==2.8.6
+drf-yasg==1.20.0
+flake8==3.8.4
+watchdog==0.10.3
+PyYAML==5.3.1
+argh==0.26.2
+celery==5.0.2
+django-cors-headers==3.5.0
+django-filter==2.4.0
+redis==3.5.3
+djangorestframework==3.12.2
+uwsgi
