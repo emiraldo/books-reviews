@@ -5,13 +5,11 @@ from django.urls import reverse
 from django_celery_results.models import TaskResult
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-
-# Create your views here.
 from rest_framework.response import Response
 from rest_framework.status import HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
-from .serializers import BookReviewCreateSerializer
+from .serializers import BookReviewCreateSerializer, TaskResultModelSerializer
 from .tasks import book_review_create
 
 
@@ -53,13 +51,11 @@ class BulkBookReviewCreate(APIView):
 
 class TrackingBookReviewCreate(APIView):
 
+    @swagger_auto_schema(
+        responses={
+            200: TaskResultModelSerializer(),
+        }
+    )
     def get(self, request, task_id):
         task_result = get_object_or_404(TaskResult, task_id=task_id)
-        return Response(
-            {
-                "status": task_result.status,
-                "date_created": task_result.date_created,
-                "date_done": task_result.date_done,
-                "results": json.loads(task_result.result)
-            }
-        )
+        return Response(TaskResultModelSerializer(task_result).data)
