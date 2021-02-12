@@ -25,3 +25,4 @@ class TaskResultFactory(DjangoModelFactory):
         model = TaskResult
 
     task_id = factory.Faker('uuid4')
+    result = '[]'

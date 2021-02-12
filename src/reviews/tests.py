@@ -6,7 +6,8 @@ from django.test import TestCase
 
 # Create your tests here.
 from django.urls import reverse
-from rest_framework.status import HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST, \
+    HTTP_200_OK
 from rest_framework.test import APIClient
 
 from reviews.exceptions import RecordPerMinute, GoogleApiError
@@ -93,3 +94,24 @@ class BulkBookReviewCreate(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
+
+
+class TrackingBookReview(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.reviwer = ReviewerFactory()
+
+    def test_get_tracking(self,):
+        task = TaskResultFactory()
+
+        response = self.client.get(
+            reverse(
+                'reviewers:tracking',
+                kwargs={
+                    "task_id": task.task_id
+                }
+            ), content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
