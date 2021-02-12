@@ -36,14 +36,13 @@ class BulkBookReviewCreate(APIView):
         data = BookReviewCreateSerializer(data=request.data)
         if data.is_valid():
             task = book_review_create.delay(data.data.get('reviews'))
-            print(task)
-            print(task.task_id)
             return Response(
                 status=HTTP_202_ACCEPTED,
                 data={
                     "msg": "accepted",
                     "tracking_url": reverse(
-                        'reviewers:tracking', kwargs={
+                        'reviewers:tracking',
+                        kwargs={
                             "task_id": task.task_id
                         }
                     )

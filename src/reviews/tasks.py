@@ -37,5 +37,11 @@ def book_review_create(data):
                 'error': e.__str__()
             }
             )
+        except Exception as e:
+            results.append({
+                'book_id': review.get('book_id'),
+                'error': e.__str__()
+            }
+            )
 
     return results
