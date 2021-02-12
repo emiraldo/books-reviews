@@ -21,7 +21,7 @@ mergemigrations:
 	docker-compose exec api ./manage.py makemigrations --merge
 
 test:
-	docker-compose exec api ./manage.py test
+	docker-compose run --rm api ./manage.py test --settings=api.settings.test
 
 makemessages:
 	docker-compose exec api ./manage.py makemessages -l es

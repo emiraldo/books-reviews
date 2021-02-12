@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'celery',
+    'django_celery_results',
     'reviews'
 ]
 
