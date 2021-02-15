@@ -50,7 +50,7 @@ http://13.58.116.139/swagger/
     "reviews": [
         {
             "book_id": "QnghAQAAIAAJ",
-            "user_id": "864eb77b-b2f7-4268-8402-42eaac4b43f0",
+            "user_id": "80b4b634-e831-4b6b-9789-15741683178c",
             "review": "my review"
         }
     ]
