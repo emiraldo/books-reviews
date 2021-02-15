@@ -27,3 +27,49 @@ To know the other commands check the Makefile file.
 ## Api Doc
 
 After run the project, ingress in http://localhost:8000/swagger
+
+
+## Demo
+
+### Url
+http://http://13.58.116.139/
+
+### Admin
+
+http://13.58.116.139/admin
+
+### Swagger
+
+http://13.58.116.139/swagger/
+
+### Payload examples
+
+* create reviews
+`
+"reviews": [
+    {
+        'book_id': 'QnghAQAAIAAJ',
+        'user_id': 864eb77b-b2f7-4268-8402-42eaac4b43f0,
+        'review': 'my review'
+    }...
+]
+`
+
+### QueryParams format
+
+#### /book-review/
+* book_id : str
+* user_id : uuid4
+* start_date : YYYY-MM-DD
+* ned_date : YYYY-MM-DD
+* date : YYYY-MM-DD
+
+### Params format
+
+#### /book-review/tracking/{task_id}
+* task_id : uuid4
+
+### Test data
+
+* user admin : demo:password1234
+* reviewer_id (user_id) : 80b4b634-e831-4b6b-9789-15741683178c (create reviewers http://13.58.116.139/admin/reviews/reviewer/add/)
