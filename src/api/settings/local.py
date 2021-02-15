@@ -12,7 +12,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 CELERY_BROKER_URL = f'redis://{os.environ["REDIS_HOST"]}:6379'
-
 CELERY_TIMEZONE = 'America/Bogota'
-
 CELERY_RESULT_BACKEND = 'django-db'
