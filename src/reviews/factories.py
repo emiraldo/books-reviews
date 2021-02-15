@@ -1,5 +1,3 @@
-import uuid
-
 from django_celery_results.models import TaskResult
 from factory.django import DjangoModelFactory
 import factory

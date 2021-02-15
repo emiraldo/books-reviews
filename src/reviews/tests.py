@@ -1,11 +1,9 @@
 import json
-import uuid
 from unittest import mock
 
 from django.test import TestCase
-
-# Create your tests here.
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework.status import HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST, \
     HTTP_200_OK
 from rest_framework.test import APIClient
@@ -57,7 +55,7 @@ class BulkBookReviewCreate(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.reviwer = ReviewerFactory()
+        self.reviewer = ReviewerFactory()
 
     @mock.patch(
         'reviews.views.book_review_create',
@@ -69,7 +67,7 @@ class BulkBookReviewCreate(TestCase):
             "reviews": [
                 {
                     'book_id': 'QnghAQAAIAAJ',
-                    'user_id': str(self.reviwer.id),
+                    'user_id': str(self.reviewer.id),
                     'review': 'test'
                 }
             ]
@@ -100,7 +98,7 @@ class TrackingBookReview(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.reviwer = ReviewerFactory()
+        self.reviewer = ReviewerFactory()
 
     def test_get_tracking(self,):
         task = TaskResultFactory()
@@ -115,3 +113,64 @@ class TrackingBookReview(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_200_OK)
+
+
+class BookReviewList(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.reviewer = ReviewerFactory()
+        for i in range(0, 10):
+            BookReviewFactory(
+                username=self.reviewer.username,
+                book_id=f'QnghAQAAIAA{i}',
+                review='test',
+            )
+
+    def test_list(self):
+
+        response = self.client.get(
+            reverse(
+                'reviewers:list',
+            ), content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(len(response.json().get('results', [])), 10)
+
+    def test_list_filter(self):
+
+        response = self.client.get(
+            reverse('reviewers:list') + "?book_id=QnghAQAAIAA1",
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(len(response.json().get('results', [])), 1)
+
+        response = self.client.get(
+            reverse('reviewers:list') + f"?user_id={str(self.reviewer.pk)}",
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(len(response.json().get('results', [])), 10)
+
+        now = timezone.now()
+        response = self.client.get(
+            reverse('reviewers:list') + f"?date={now.year}-{now.month}-{now.day}",
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(len(response.json().get('results', [])), 10)
+
+        now = timezone.now() + timezone.timedelta(days=3)
+        aux_date = now + timezone.timedelta(days=3)
+        response = self.client.get(
+            reverse('reviewers:list') + f"?start_date={now.year}-{now.month}-{now.day}&end_date={aux_date.year}-{aux_date.month}-{aux_date.day}",
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(len(response.json().get('results', [])), 0)
