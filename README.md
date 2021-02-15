@@ -45,15 +45,17 @@ http://13.58.116.139/swagger/
 ### Payload examples
 
 * create reviews
-`
-"reviews": [
-    {
-        'book_id': 'QnghAQAAIAAJ',
-        'user_id': 864eb77b-b2f7-4268-8402-42eaac4b43f0,
-        'review': 'my review'
-    }...
-]
-`
+```json
+{
+    "reviews": [
+        {
+            "book_id": "QnghAQAAIAAJ",
+            "user_id": "864eb77b-b2f7-4268-8402-42eaac4b43f0",
+            "review": "my review"
+        }
+    ]
+}
+```
 
 ### QueryParams format
 
