@@ -9,7 +9,6 @@ from .serializers import BookReviewModelSerializer
 def book_review_create(data):
     results = []
     for review in data:
-        print(review)
         try:
             user = Reviewer.objects.get(
                 id=review.get('user_id')
@@ -23,8 +22,12 @@ def book_review_create(data):
             results.append(
                 BookReviewModelSerializer(book_review).data
             )
-        except Reviewer.DoesNotExist:
-            pass
+        except Reviewer.DoesNotExist as e:
+            results.append({
+                'book_id': review.get('book_id'),
+                'error': e.__str__()
+            }
+            )
         except RecordPerMinute as e:
             results.append({
                 'book_id': review.get('book_id'),
