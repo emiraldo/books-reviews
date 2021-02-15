@@ -9,3 +9,9 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1"
 ]
+
+CELERY_BROKER_URL = f'redis://{os.environ["REDIS_HOST"]}:6379'
+
+CELERY_TIMEZONE = 'America/Bogota'
+
+CELERY_RESULT_BACKEND = 'django-db'
